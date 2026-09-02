@@ -40,17 +40,20 @@ class AppConfigSpec extends SpecBase {
       appConfig.apiUrl must include("/lisa-api/")
     }
 
-    "expose the feedback redirect URL" in {
+    "expose the feedback redirect URL with the service navigation parameter" in {
       appConfig.feedbackRedirectUrl must include("/feedback/lifetime-isa")
+      appConfig.feedbackRedirectUrl must endWith("?useServiceNavigation")
     }
 
     "expose the register organisation URL" in {
       appConfig.registerOrgUrl must include("RegisterOrLogon.aspx")
     }
 
-    "expose authenticated and unauthenticated beta feedback URLs" in {
-      appConfig.betaFeedbackUrl                must endWith("/contact/beta-feedback")
-      appConfig.betaFeedbackUnauthenticatedUrl must endWith("/contact/beta-feedback-unauthenticated")
+    "expose authenticated and unauthenticated beta feedback URLs with the service navigation parameter" in {
+      appConfig.betaFeedbackUrl                must endWith("/contact/beta-feedback?useServiceNavigation")
+      appConfig.betaFeedbackUnauthenticatedUrl must endWith(
+        "/contact/beta-feedback-unauthenticated?useServiceNavigation"
+      )
     }
 
     "expose the login callback URL" in {

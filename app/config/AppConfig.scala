@@ -33,18 +33,24 @@ class AppConfig @Inject() (config: ServicesConfig) {
   private val logoutCallback  = config.getString("gg-urls.logout-callback.url")
   private val timeoutCallback = config.getString("gg-urls.timeout-callback.url")
 
-  lazy val appName: String             = config.getString("appName")
-  lazy val apiUrl: String              = loadConfig("external-urls.lisa-api.url")
-  lazy val feedbackRedirectUrl: String = loadConfig("external-urls.feedback-frontend.url")
-  lazy val registerOrgUrl: String      = loadConfig("gg-urls.registerOrg.url")
+  private val feedbackFrontendUrl = loadConfig("external-urls.feedback-frontend.url")
+  private val betaFeedbackBaseUrl = s"$contactHost/contact/beta-feedback"
 
-  lazy val signOutUrl: String                     = getSignOutUrl(logoutCallback)
-  lazy val timeOutUrl: String                     = getSignOutUrl(timeoutCallback)
-  lazy val betaFeedbackUrl: String                = s"$contactHost/contact/beta-feedback"
-  lazy val betaFeedbackUnauthenticatedUrl: String = s"$contactHost/contact/beta-feedback-unauthenticated"
-  lazy val loginCallback: String                  = config.getString("gg-urls.login-callback.url")
-  lazy val loginURL: String                       = s"$basGatewayHost/bas-gateway/sign-in"
-  lazy val displayURBanner: Boolean               = config.getBoolean("display-ur-banner")
+  lazy val appName: String        = config.getString("appName")
+  lazy val apiUrl: String         = loadConfig("external-urls.lisa-api.url")
+  lazy val registerOrgUrl: String = loadConfig("gg-urls.registerOrg.url")
+
+  lazy val signOutUrl: String       = getSignOutUrl(logoutCallback)
+  lazy val timeOutUrl: String       = getSignOutUrl(timeoutCallback)
+  lazy val loginCallback: String    = config.getString("gg-urls.login-callback.url")
+  lazy val loginURL: String         = s"$basGatewayHost/bas-gateway/sign-in"
+  lazy val displayURBanner: Boolean = config.getBoolean("display-ur-banner")
+
+  lazy val feedbackRedirectUrl: String = s"$feedbackFrontendUrl?useServiceNavigation"
+  lazy val betaFeedbackUrl: String     = s"$betaFeedbackBaseUrl?useServiceNavigation"
+
+  lazy val betaFeedbackUnauthenticatedUrl: String =
+    s"$betaFeedbackBaseUrl-unauthenticated?useServiceNavigation"
 
   def getSignOutUrl(callbackUrl: String): String = {
     val encodedCallbackUrl = java.net.URLEncoder.encode(callbackUrl, "UTF-8")
